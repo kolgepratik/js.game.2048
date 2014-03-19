@@ -35,6 +35,22 @@ div {
 	text-align: left;
 }
 
+.footer {	
+	position: fixed;
+	width: 30%;
+	height: 40px;
+	padding: 10px;
+	right: 0px;
+	bottom: 40px;
+	background-color: white;
+	color: gray;
+	font-family: sans-serif;
+	font-size: 20px;
+	opacity: 1;
+	filter: alpha(opacity=100);
+	text-align: right;
+}
+
 .rightHeader {
 	position: fixed;
 	padding: 10px;
