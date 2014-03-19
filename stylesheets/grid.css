@@ -1,0 +1,191 @@
+body {
+	text-align: center;
+	vertical-align: middle;
+}
+
+div {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.centerAlign {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.fullSpan {
+	width: 100%;
+	height: 100%;
+}
+
+.grid {
+	position: relative;
+	border: 5px solid gray;
+	padding: 20px; 
+	background-color: gray;
+	margin: 0 auto;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.messageContainer {
+	z-index: 3;
+	display: table;
+	position: absolute;
+	border: 5px solid gray;
+	right: -5px;
+	top: -5px;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	color: #4D5656;
+	font-family: sans-serif;
+	font-size: 20px;
+	opacity: 0.9;
+	filter: alpha(opacity=90);
+}
+
+.message {	
+	display:table-cell;
+    vertical-align:middle;
+}
+
+.block {
+	position: absolute;
+	font-family: sans-serif;
+	font-size: 40px;
+	font-weight: bold;
+	display: table;    
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	z-index: 1;
+}
+
+.block span {
+	display:table-cell;
+    vertical-align:middle;
+}
+
+.scoreContainer {
+	font-family: sans-serif;
+	font-size: 30px;
+	color: #334C4C;
+}
+
+.scoreContent {
+	font-family: sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	color: #4D5656;
+}
+
+.boostContainer {
+	font-family: sans-serif;
+	font-size: 15px;
+	color: #334C4C;
+}
+
+.boostContent {
+	font-family: sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+	color: #4D5656;
+}
+
+.scorePlus {
+	font-family: sans-serif;
+	font-size: 20px;
+	color: #FF6666;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.level_0 {
+	color: white;
+	background-color: #AEC1C1;
+}
+
+.level_2 {
+	color: gray;
+	background-color: #FFE0C2;
+}
+
+.level_4 {
+	color: gray;
+	background-color: #FFD1A3;
+}
+
+.level_8 {
+	color: gray;
+	background-color: #E6B88A;
+}
+
+
+.level_16 {
+	color: gray;
+	background-color: #99C299;
+}
+
+.level_32 {
+	color: white;
+	background-color: #66A366;
+}
+
+.level_64 {
+	color: white;
+	background-color: #338533;
+}
+
+.level_128 {
+	color: white;
+	background-color: #005C00;
+}
+
+
+
+.level_256 {
+	color: gray;
+	background-color: #FFD6CC;
+}
+
+.level_512 {
+	color: gray;
+	background-color: #FFAD99;
+}
+
+.level_1024 {
+	color: white;
+	background-color: #FF8566;
+}
+
+.level_2048 {
+	color: white;
+	background-color: #FF4719;
+}
+
+
+
+.level_4096 {
+	color: gray;
+	background-color: #D1F0FF;
+}
+
+.level_8192 {
+	color: gray;
+	background-color: #B2E6FF;
+}
+
+.level_16384 {
+	color: gray;
+	background-color: #94DBFF;
+}
+
+.level_32768 {
+	color: gray;
+	background-color: #75D1FF;
+}
+
