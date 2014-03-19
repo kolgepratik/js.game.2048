@@ -377,7 +377,6 @@ function boost() {
 		if(_multipliers[rndm] === _user.score.c.maxLevel) {
 			var boosterRndm = Math.floor(Math.random() * _boosts.length);
 			if(boosterRndm < _boosts.length) {
-				console.log('boost: ' + boosterRndm + ' value: ' + _boosts[boosterRndm]);
 				_user.game.boost = _boosts[boosterRndm];
 				$('#boostContent').html('x' + _user.game.boost);
 				$('#boostContainer').show();
