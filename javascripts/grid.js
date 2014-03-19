@@ -274,7 +274,7 @@ function _help() {
 	
 	_user.game.state = _states.PS; 
 	
-	$helpContent.append($('<b>Help</b>')).append($help);
+	$helpContent.append($('<b>Help</b>')).append($help).append('Press <b>spacebar</b> to resume your game.');
 	
 	$('#message').empty().append($helpContent);
 	
