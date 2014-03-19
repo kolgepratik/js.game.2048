@@ -269,7 +269,7 @@ function _help() {
 	
 	var $help = $('<ul></ul>');	
 	$help.append($('<li></li>', { html: 'When 2 blocks with the same numbers collide, they combine and a new block is formed with twice the value of original blocks.' }));
-	$help.append($('<li></li>', { html: 'You will randomly receive boosts. When a boost is available, the grid will flash. Boots can be of any value. For example: a boost of x8 means that the next time you combine any 2 same value blocks together, the new block will be multiplied by boost times the its original value rather than by 2.' }));
+	$help.append($('<li></li>', { html: 'You will also receive boosts randomly. When a boost is available, the grid will flash. Boosts can be of any value. For example: a boost of x8 means that the next time you combine any 2 same value blocks together, the new block will be multiplied by 8 times the its original value rather than by 2.' }));
 	$help.append($('<li></li>', { html: 'Use arrow keys left, right, top, and down to move the blocks to left, right, top, or bottom respectively.' }));
 	
 	_user.game.state = _states.PS; 
