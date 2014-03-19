@@ -11,7 +11,11 @@ var _control_bindings = {
 	LEFT: 37,
 	TOP: 38,
 	DOWN: 40,
-	RIGHT: 39
+	RIGHT: 39,
+	PAUSE_RESUME: 32,
+	HELP: 72,
+	RESTART: 82,
+	UNDO: 9
 };
 
 var _settings = {
@@ -46,9 +50,11 @@ var _multipliers = [
 ];
 
 var _states = {
-	IP: 0,
-	PF: 1,
-	FN: 2
+	NS: 0,
+	IP: 1,
+	PS: 2,
+	PF: 3,
+	FN: 4
 };
 
 var _user = {
@@ -137,21 +143,82 @@ function _gameOver() {
 		_start();
 	});
 	
-	$('#message').append($gameOverContent.append($score).append($restartButton));
+	$('#message').empty().append($gameOverContent.append($score).append($restartButton));
 	
-	$('#messageContainer').show('explode', 500);
+	$('#messageContainer').show('explode', 200);
+}
+
+
+function _resume() {
+	$('#message').empty('');
+	$('#messageContainer').hide('puff', 500);	
+	_user.game.state = _states.IP; 
+}
+
+function _pause() {
+	var $helpContent = $('<div style="text-align: left; padding: 10px;"></div>');
+	
+	var $help = $('<ul></ul>');	
+	$help.append($('<li></li>', { html: 'Spacebar: Pause or Resume' }));
+	$help.append($('<li></li>', { html: 'Backspace: Undo your last move' }));
+	$help.append($('<li></li>', { html: 'R: Restart' }));
+	$help.append($('<li></li>', { html: 'H: Help & Controls' }));
+	
+	_user.game.state = _states.PS; 
+	
+	$('#message').empty().append($helpContent.append($('<b>Options</b>')).append($help));
+	
+	$('#messageContainer').show('puff', 200);
+}
+
+
+function _pauseOrResume() {
+	if(_user.game.state === _states.IP) {
+		_pause();
+	} else if(_user.game.state === _states.PS) {
+		_resume();
+	}
+}
+
+function _help() {
+	var $helpContent = $('<div style="text-align: left; padding: 10px;"></div>');
+	
+	var $help = $('<ul></ul>');	
+	$help.append($('<li></li>', { html: 'When 2 blocks with the same numbers collide, they combine and a new block is formed with twice the value of original blocks.' }));
+	$help.append($('<li></li>', { html: 'You will randomly receive boosts. When a boost is available, the grid will flash. Boots can be of any value. For example: a boost of x8 means that the next time you combine any 2 same value blocks together, the new block will be multiplied by boost times the its original value rather than by 2.' }));
+	$help.append($('<li></li>', { html: 'Use arrow keys left, right, top, and down to move the blocks to left, right, top, or bottom respectively.' }));
+	
+	_user.game.state = _states.PS; 
+	
+	$helpContent.append($('<b>Help</b>')).append($help);
+	
+	$('#message').empty().append($helpContent);
+	
+	$('#messageContainer').show('puff', 200);
 }
 
 function bindControls() {
 	$(document).on('keydown', function(event) {
-		if(event.which ===_control_bindings.LEFT) {
-			_move(_controls.MOVE_LEFT);
-		} else if(event.which ===_control_bindings.TOP) {
-			_move(_controls.MOVE_TOP);
-		} else if(event.which ===_control_bindings.DOWN) {
-			_move(_controls.MOVE_DOWN);
-		} else if(event.which ===_control_bindings.RIGHT) {
-			_move(_controls.MOVE_RIGHT);
+		if(_user.game.state === _states.IP || _user.game.state === _states.PF) {
+			if(event.which ===_control_bindings.LEFT) {
+				_move(_controls.MOVE_LEFT);
+			} else if(event.which ===_control_bindings.TOP) {
+				_move(_controls.MOVE_TOP);
+			} else if(event.which ===_control_bindings.DOWN) {
+				_move(_controls.MOVE_DOWN);
+			} else if(event.which ===_control_bindings.RIGHT) {
+				_move(_controls.MOVE_RIGHT);
+			}
+		}
+		
+		if(event.which ===_control_bindings.PAUSE_RESUME) {
+			_pauseOrResume();
+		} else if(event.which ===_control_bindings.HELP) {
+			_help();
+		} else if(event.which ===_control_bindings.RESTART) {
+			_start();
+		} else if(event.which ===_control_bindings.UNDO) {
+			_undo();
 		}
 	});
 }
