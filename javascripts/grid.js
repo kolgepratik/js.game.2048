@@ -15,14 +15,15 @@ var _control_bindings = {
 	PAUSE_RESUME: 32,
 	HELP: 72,
 	RESTART: 82,
-	UNDO: 9
+	UNDO: 8
 };
 
 var _settings = {
 	BLOCK_SIZE: 100,
 	PADDING_SIZE: 20,
 	MULTIPLIER: 2,
-	MAX_PAIRS: 2
+	MAX_PAIRS: 2,
+	MAX_UNDO_MOVES: 4
 };
 
 var _symbols = {
@@ -59,7 +60,7 @@ var _states = {
 
 var _user = {
 	score: { c: { s: 0, m: 0, maxLevel: _symbols.ONE }, b: { s: 0, m: 0, maxLevel: _symbols.ONE } },
-	game: { boost: _boosters.NONE, state: _states.IP }
+	game: { boost: _boosters.NONE, state: _states.IP, recentMoves: [] }
 };
 
 var _a_left = [ [], [], [], [] ];
@@ -180,6 +181,89 @@ function _pauseOrResume() {
 	}
 }
 
+function _undo() {
+	if(_user.game.recentMoves.length > 0) {
+		var lastMove = _user.game.recentMoves.pop();
+		var where = lastMove.w;
+		var moveArray = lastMove.a;
+		var score = lastMove.score;
+		
+		if(where === _controls.MOVE_LEFT) {
+			for(var i=0; i<moveArray.length; i++) {
+				for(var j=0; j<moveArray.length; j++) {
+					_a_left[i][j] = moveArray[i][j];
+				}
+			}
+			
+			_user.score.c.s = score.s;
+			_user.score.c.m = score.m;
+			_user.score.c.maxLevel = score.maxLevel;
+			
+			setLeftArray();
+		} else if(where === _controls.MOVE_TOP) {
+			for(var i=0; i<moveArray.length; i++) {
+				for(var j=0; j<moveArray.length; j++) {
+					_a_top[i][j] = moveArray[i][j];
+				}
+			}
+			
+			_user.score.c.s = score.s;
+			_user.score.c.m = score.m;
+			_user.score.c.maxLevel = score.maxLevel;
+			
+			setTopArray();
+		} else if(where === _controls.MOVE_DOWN) {
+			for(var i=0; i<moveArray.length; i++) {
+				for(var j=0; j<moveArray.length; j++) {
+					_a_down[i][j] = moveArray[i][j];
+				}
+			}
+			
+			_user.score.c.s = score.s;
+			_user.score.c.m = score.m;
+			_user.score.c.maxLevel = score.maxLevel;
+			
+			setDownArray();
+		} else if(where === _controls.MOVE_RIGHT) {
+			for(var i=0; i<moveArray.length; i++) {
+				for(var j=0; j<moveArray.length; j++) {
+					_a_right[i][j] = moveArray[i][j];
+				}
+			}
+			
+			_user.score.c.s = score.s;
+			_user.score.c.m = score.m;
+			_user.score.c.maxLevel = score.maxLevel;
+			
+			setRightArray();
+		}
+		
+		$('.scorePlus').hide();
+		$('#undoMove').show().hide('explode', 500);
+		
+		_refresh();
+	}	
+}
+
+function saveUserMove(arr, where) {
+	var moveArray = new Array();
+	for(var i=0; i <arr.length; i++) {
+		var temp = new Array();
+		for(var j=0; j<arr.length; j++) {
+			temp.push(arr[i][j]);
+		}
+		moveArray.push(temp);
+	}
+	
+	if(_user.game.recentMoves.length === _settings.MAX_UNDO_MOVES) {
+		_user.game.recentMoves = _user.game.recentMoves.splice(1);
+	}
+	
+	var score = { s: _user.score.c.s, m: _user.score.c.m, maxLevel: _user.score.c.maxLevel }; 
+	
+	_user.game.recentMoves.push({ a: moveArray, score: score, w: where });
+}
+
 function _help() {
 	var $helpContent = $('<div style="text-align: left; padding: 10px;"></div>');
 	
@@ -208,6 +292,8 @@ function bindControls() {
 				_move(_controls.MOVE_DOWN);
 			} else if(event.which ===_control_bindings.RIGHT) {
 				_move(_controls.MOVE_RIGHT);
+			} else if(event.which ===_control_bindings.UNDO) {
+				_undo();
 			}
 		}
 		
@@ -217,9 +303,7 @@ function bindControls() {
 			_help();
 		} else if(event.which ===_control_bindings.RESTART) {
 			_start();
-		} else if(event.which ===_control_bindings.UNDO) {
-			_undo();
-		}
+		} 
 	});
 }
 
@@ -477,6 +561,9 @@ function _move(where) {
 
 function _processMove(arr, where) {
 	var plussed = 0; 
+	
+	saveUserMove(arr, where);
+	
 	for(var itr=0; itr<arr.length; itr++) {		
 		var derived = new Object();
 		for(var t=arr[itr].length - 1; t>=0; t--) {
