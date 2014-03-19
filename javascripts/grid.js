@@ -15,7 +15,7 @@ var _control_bindings = {
 	PAUSE_RESUME: 32,
 	HELP: 72,
 	RESTART: 82,
-	UNDO: 8
+	UNDO: 90
 };
 
 var _settings = {
@@ -161,7 +161,7 @@ function _pause() {
 	
 	var $help = $('<ul></ul>');	
 	$help.append($('<li></li>', { html: 'Spacebar: Pause or Resume' }));
-	$help.append($('<li></li>', { html: 'Backspace: Undo your last move' }));
+	$help.append($('<li></li>', { html: 'Z: Undo your last move' }));
 	$help.append($('<li></li>', { html: 'R: Restart' }));
 	$help.append($('<li></li>', { html: 'H: Help & Controls' }));
 	
