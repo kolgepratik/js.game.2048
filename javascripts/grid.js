@@ -156,7 +156,7 @@ function _welcome() {
 function _gameOver() {
 	var $gameOverContent = $('<div></div>');
 	var $score = $('<span><b>Game over</b><br></span>');
-	$score.append('You achieved a score of <b>' + _user.score.c.s + '</b> in <b>' + _user.score.c.m + '</b> moves.<br>You reached a max level of <b>' + _user.score.c.maxLevel + '</b>.<br><br>');
+	$score.append('You achieved a score of <b>' + _user.score.c.s + '</b> in <b>' + _user.score.c.m + '</b> moves.<br>You reached a max level of <b>' + _user.score.c.maxLevel + '</b>.<br>Press <b>Z</b> to undo your last move.<br><br>');
 	var $restartButton = $('<button></button>', { type: 'button', text: 'Restart' });
 	$restartButton.on('click', function() {
 		$('#message').empty('');
@@ -206,6 +206,14 @@ function _pauseOrResume() {
 
 function _undo() {
 	if(_user.game.recentMoves.length > 0) {
+        if(_user.game.state === _states.FN) {
+            $('#message').empty('');
+            $('#messageContainer').hide('puff', 500);
+            _user.game.state = _states.PF;
+        } else {
+            _user.game.state = _states.IP;
+        }
+        
 		var lastMove = _user.game.recentMoves.pop();
 		var where = lastMove.w;
 		var moveArray = lastMove.a;
@@ -317,10 +325,14 @@ function bindControls() {
 				_move(_controls.MOVE_DOWN);
 			} else if(event.which ===_control_bindings.RIGHT) {
 				_move(_controls.MOVE_RIGHT);
-			} else if(event.which ===_control_bindings.UNDO) {
-				_undo();
-			}
+			} 
 		}
+        
+        if(_user.game.state === _states.IP || _user.game.state === _states.PF || _user.game.state === _states.FN) {
+            if(event.which ===_control_bindings.UNDO) {
+                _undo();
+            }
+        }
 		
 		if(event.which ===_control_bindings.PAUSE_RESUME) {
 			_pauseOrResume();
