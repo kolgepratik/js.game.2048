@@ -86,6 +86,11 @@ function _init(options) {
 		_user.score.b.maxLevel = _user.score.c.maxLevel;
 	}
 	
+    _a_left = [ [], [], [], [] ];
+    _a_top = [ [], [], [], [] ];
+    _a_down = [ [], [], [], [] ];
+    _a_right = [ [], [], [], [] ];
+    
 	_user.score.c.s = 0;
 	_user.score.c.m = 0;
 	_user.score.c.maxLevel = _symbols.ONE;
