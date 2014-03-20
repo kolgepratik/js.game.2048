@@ -15,7 +15,8 @@ var _control_bindings = {
 	PAUSE_RESUME: 32,
 	HELP: 72,
 	RESTART: 82,
-	UNDO: 90
+	UNDO: 90,
+    TOGGLE_BOOST: 66
 };
 
 var _settings = {
@@ -60,20 +61,20 @@ var _states = {
 
 var _user = {
 	score: { c: { s: 0, m: 0, maxLevel: _symbols.ONE }, b: { s: 0, m: 0, maxLevel: _symbols.ONE } },
-	game: { boost: _boosters.NONE, state: _states.IP, recentMoves: [] }
+	game: { boost: _boosters.NONE, state: _states.IP, recentMoves: [] },
+    settings: { boost: false }
 };
 
-var _a_left = [ [], [], [], [] ];
-
-var _a_top = [ [], [], [], [] ];
-
-var _a_down = [ [], [], [], [] ];
-
-var _a_right = [ [], [], [], [] ];
+var _a_left = [ [], [], [], [] ]; 
+    _a_top = [ [], [], [], [] ],
+    _a_down = [ [], [], [], [] ],
+    _a_right = [ [], [], [], [] ];
 
 function _init(options) {
-	_grid = new Array();
+	_grid = [];
 	
+    _user.game.state = _states.IP;
+    
 	var $grid = $('#grid').empty();
 	
 	$grid.append($('.messageContainer').clone().attr('id', 'messageContainer'));
@@ -84,24 +85,12 @@ function _init(options) {
 		_user.score.b.s = _user.score.c.s;
 		_user.score.b.m = _user.score.c.m;
 		_user.score.b.maxLevel = _user.score.c.maxLevel;
-	}
+	}       
 	
-    _a_left = [ [], [], [], [] ];
-    _a_top = [ [], [], [], [] ];
-    _a_down = [ [], [], [], [] ];
-    _a_right = [ [], [], [], [] ];
-    
-	_user.score.c.s = 0;
-	_user.score.c.m = 0;
-	_user.score.c.maxLevel = _symbols.ONE;
-	_user.game.boost = _boosters.NONE;
-	_user.game.state = _states.IP;
+    var gridDimensions = ((options.size * _settings.BLOCK_SIZE) + (_settings.PADDING_SIZE * (options.size - 1)));	
 	
-	var width = ((options.size * _settings.BLOCK_SIZE) + (_settings.PADDING_SIZE * (options.size - 1)));
-	var height = ((options.size * _settings.BLOCK_SIZE) + (_settings.PADDING_SIZE * (options.size - 1)));
-	
-	$grid.css({'width': width + 'px', 'height': height + 'px'});
-	$messageContainer.css({'width': width + 'px', 'height': height + 'px'});
+	$grid.css({'width': gridDimensions + 'px', 'height': gridDimensions + 'px'});
+	$messageContainer.css({'width': gridDimensions + 'px', 'height': gridDimensions + 'px'});
 	
 	$messageContainer.find('.message').attr('id', 'message');
 	$messageContainer.hide();
@@ -129,13 +118,39 @@ function _init(options) {
 		}
 	}
 	
-	_randomBlock();
-	
-	bindControls();
+	_randomBlock();    
+    _randomBlock();
 }
 
 function _start() {
-	_init({size: 4});
+	bindControls();
+    _init({size: 4});
+}
+
+function _restart() {
+    _a_left = [ [ _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY ], [ _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY ], [ _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY ], [ _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY, _symbols.EMPTY ] ];
+    
+    setLeftArray();
+    
+	_user.score.c.s = 0;
+	_user.score.c.m = 0;
+	_user.score.c.maxLevel = _symbols.ONE;
+	_user.game.boost = _boosters.NONE;
+	_user.game.state = _states.NS; 
+    
+    _init({size: 4});
+}
+
+
+function message(text) {    
+    $('#message').html(text).show();
+	$('#messageContainer').fadeIn('slow', function() {
+        $('#messageContainer').fadeOut('slow');
+    });           
+}
+
+function _welcome() {
+    
 }
 
 function _gameOver() {
@@ -146,9 +161,11 @@ function _gameOver() {
 	$restartButton.on('click', function() {
 		$('#message').empty('');
 		$('#messageContainer').hide('puff', 500);
-		_start();
+		_restart();
 	});
 	
+    _user.game.state = _states.FN;
+    
 	$('#message').empty().append($gameOverContent.append($score).append($restartButton));
 	
 	$('#messageContainer').show('explode', 200);
@@ -167,6 +184,7 @@ function _pause() {
 	var $help = $('<ul></ul>');	
 	$help.append($('<li></li>', { html: 'Spacebar: Pause or Resume' }));
 	$help.append($('<li></li>', { html: 'Z: Undo your last move' }));
+    $help.append($('<li></li>', { html: 'B: Toggle Boosts (default: off)' }));
 	$help.append($('<li></li>', { html: 'R: Restart' }));
 	$help.append($('<li></li>', { html: 'H: Help & Controls' }));
 	
@@ -247,7 +265,9 @@ function _undo() {
 		$('#undoMove').show().hide('explode', 500);
 		
 		_refresh();
-	}	
+	} else {
+        message('You can only undo upto your last 4 moves.');
+    }
 }
 
 function saveUserMove(arr, where) {
@@ -274,7 +294,7 @@ function _help() {
 	
 	var $help = $('<ul></ul>');	
 	$help.append($('<li></li>', { html: 'When 2 blocks with the same numbers collide, they combine and a new block is formed with twice the value of original blocks.' }));
-	$help.append($('<li></li>', { html: 'You will also receive boosts randomly. When a boost is available, the grid will flash. Boosts can be of any value. For example: a boost of x8 means that the next time you combine any 2 same value blocks together, the new block will be multiplied by 8 times the its original value rather than by 2.' }));
+	$help.append($('<li></li>', { html: 'You will also receive boosts randomly. When a boost is available, the grid will flash. Boosts can be of any value. For example: a boost of x8 means that the next time you combine any 2 same value blocks together, the new block will be multiplied by 8 times its original value rather than by 2. Press <b>B</b> to Enable/Disable Boosts.' }));
 	$help.append($('<li></li>', { html: 'Use arrow keys left, right, top, and down to move the blocks to left, right, top, or bottom respectively.' }));
 	
 	_user.game.state = _states.PS; 
@@ -307,8 +327,10 @@ function bindControls() {
 		} else if(event.which ===_control_bindings.HELP) {
 			_help();
 		} else if(event.which ===_control_bindings.RESTART) {
-			_start();
-		} 
+			_restart();
+		} else if(event.which ===_control_bindings.TOGGLE_BOOST) {
+			_toggleBoost();
+        }
 	});
 }
 
@@ -344,7 +366,7 @@ function _refresh(newRandomBlock) {
 }
 
 function _randomBlock() {
-	var freeGrid = new Array();
+    var freeGrid = new Array();
 	for(var g=0; g<_grid.length; g++) {
 		if(_grid[g].s === _symbols.EMPTY) {
 			freeGrid.push(g);
@@ -376,19 +398,34 @@ function _randomBlock() {
 	}
 }
 
+function _toggleBoost() {
+    if(_user.settings.boost) {
+        _user.game.boost = _boosters.NONE;
+        _user.settings.boost = false;
+        $('#boostContent').empty();
+        $('#boostContainer').hide();
+        message('Boosts are off');
+    } else {
+        _user.settings.boost = true;
+        message('Boosts are on');
+    }
+}
+
 function boost() {
-	var rndm = Math.floor(Math.random() * _multipliers.length);
-	if(rndm < _multipliers.length) {
-		if(_multipliers[rndm] === _user.score.c.maxLevel) {
-			var boosterRndm = Math.floor(Math.random() * _boosts.length);
-			if(boosterRndm < _boosts.length) {
-				_user.game.boost = _boosts[boosterRndm];
-				$('#boostContent').html('x' + _user.game.boost);
-				$('#boostContainer').show();
-				$('#grid').effect('highlight', 1000);
-			}
-		}
-	}	
+	if(_user.settings.boost) {
+        var rndm = Math.floor(Math.random() * _multipliers.length);
+        if(rndm < _multipliers.length) {
+            if(_multipliers[rndm] === _user.score.c.maxLevel) {
+                var boosterRndm = Math.floor(Math.random() * _boosts.length);
+                if(boosterRndm < _boosts.length) {
+                    _user.game.boost = _boosts[boosterRndm];
+                    $('#boostContent').html('x' + _user.game.boost);
+                    $('#boostContainer').show();
+                    $('#grid').effect('highlight', 1000);
+                }
+            }
+        }	
+    }
 }
 
 function consumedBoost() {
