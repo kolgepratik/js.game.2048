@@ -183,7 +183,7 @@ function _pause() {
 	
 	var $help = $('<ul></ul>');	
 	$help.append($('<li></li>', { html: 'Spacebar: Pause or Resume' }));
-	$help.append($('<li></li>', { html: 'Z: Undo your last move' }));
+	$help.append($('<li></li>', { html: 'Z: Undo your last move (maximum 4 moves)' }));
     $help.append($('<li></li>', { html: 'B: Toggle Boosts (default: off)' }));
 	$help.append($('<li></li>', { html: 'R: Restart' }));
 	$help.append($('<li></li>', { html: 'H: Help & Controls' }));
@@ -414,16 +414,14 @@ function _toggleBoost() {
     if(_user.settings.boost) {
         _user.game.boost = _boosters.NONE;
         _user.settings.boost = false;
-        message('Boosts are off');
-        if(_user.game.state === _states.PS) {
-            _pause();
-        }        
+        message('Boosts are off');                
     } else {
         _user.settings.boost = true;
         message('Boosts are on');
-        if(_user.game.state === _states.PS) {
-            _pause();
-        } 
+    }
+    
+    if(_user.game.state === _states.PS) {
+        setTimeout(_pause, 500);
     }
 }
 
