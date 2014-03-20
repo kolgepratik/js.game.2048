@@ -414,12 +414,16 @@ function _toggleBoost() {
     if(_user.settings.boost) {
         _user.game.boost = _boosters.NONE;
         _user.settings.boost = false;
-        $('#boostContent').empty();
-        $('#boostContainer').hide();
         message('Boosts are off');
+        if(_user.game.state === _states.PS) {
+            _pause();
+        }        
     } else {
         _user.settings.boost = true;
         message('Boosts are on');
+        if(_user.game.state === _states.PS) {
+            _pause();
+        } 
     }
 }
 
