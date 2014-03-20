@@ -414,6 +414,8 @@ function _toggleBoost() {
     if(_user.settings.boost) {
         _user.game.boost = _boosters.NONE;
         _user.settings.boost = false;
+        $('#boostContent').html('x' + _user.game.boost);
+        $('#boostContainer').hide();
         message('Boosts are off');                
     } else {
         _user.settings.boost = true;
