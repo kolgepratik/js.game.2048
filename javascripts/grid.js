@@ -606,30 +606,56 @@ function setRightArray() {
 	}
 }
 
+function checkMovement(arr) {
+    var stateChanged = false;
+    for(var i=0; i<arr.length; i++) {
+        for(var j=0; j<arr.length; j++) {
+            if(_user.game.recentMoves[_user.game.recentMoves.length - 1].a[i][j] !== arr[i][j]) {
+                stateChanged = true;
+                break;
+            }
+        }
+        if(stateChanged) {
+            break;
+        }
+    }
+    
+    return stateChanged;
+}
+
 function _move(where) {
-	var plussed = 0;
+    var stateChanged = false;
+    var plussed = 0;
 	if(where === _controls.MOVE_LEFT) {
 		getLeftArray();
 		
 		plussed = _processMove(_a_left, _controls.MOVE_LEFT);
 		
+        stateChanged = checkMovement(_a_left);
+        
 		setLeftArray();
 	} else if(where === _controls.MOVE_TOP) {
 		getTopArray();
 		
 		plussed = _processMove(_a_top, _controls.MOVE_TOP);
+        
+        stateChanged = checkMovement(_a_top);
 		
 		setTopArray();
 	} else if(where === _controls.MOVE_DOWN) {
 		getDownArray();
 		
 		plussed = _processMove(_a_down, _controls.MOVE_DOWN);
+        
+        stateChanged = checkMovement(_a_down);
 		
 		setDownArray();
 	} else if(where === _controls.MOVE_RIGHT) {
 		getRightArray();
 		
 		plussed = _processMove(_a_right, _controls.MOVE_RIGHT);
+        
+        stateChanged = checkMovement(_a_right);
 		
 		setRightArray();
 	}
@@ -638,7 +664,9 @@ function _move(where) {
 	if(_user.game.state === _states.PF && plussed === 0) {
 		_gameOver();
 	} else {
-		_randomBlock();
+		if(stateChanged) {
+            _randomBlock();
+        }
 	}
 }
 
