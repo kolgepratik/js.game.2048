@@ -154,20 +154,6 @@ function _welcome() {
     
 }
 
-function _shareScoreOnFB() {
-    if(FB_SDK_LOADED) {
-        FB.ui({
-          method: 'feed',
-          name: 'I just reached the ' + _user.score.c.maxLevel + ' level in Multiply',
-          link: 'http://kolgepratik.github.io/multiply/multiply.html',
-          caption: 'My score: ' + _user.score.c.s + ' points in ' + _user.score.c.m + ' moves. Beat that, if you can.!!',
-          description: 'Click to compete with me in Multiply.!!'
-        }, function(response){
-        	message('Hey, your score was posted on facebook.!! :)');
-        });
-    }
-}
-
 function _gameOver() {
 	var $gameOverContent = $('<div></div>');
 	var $score = $('<span><b>Game over</b><br></span>');

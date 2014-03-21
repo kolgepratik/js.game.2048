@@ -39,7 +39,7 @@ function fbUpdateConnectionStatus(connected) {
 }
 
 function fbLogin() {
-	if (SDK_LOADED) {		
+	if (_fb.SDK_LOADED) {		
 		FB.login(fbLoginHandler);
 	}
 }
@@ -49,4 +49,18 @@ function fbLoginHandler(response) {
     if (response.authResponse) {
     	$.cookie(_fb.ACCESS_CODE_COOKIE_NAME, response.authResponse.accessToken, { path: '/', domain: _fb.APP_DOMAIN });
     } 
+}
+
+function _shareScoreOnFB() {
+    if(_fb.SDK_LOADED) {
+        FB.ui({
+          method: 'feed',
+          name: 'I just reached the ' + _user.score.c.maxLevel + ' level in Multiply',
+          link: 'http://kolgepratik.github.io/multiply/multiply.html',
+          caption: 'My score: ' + _user.score.c.s + ' points in ' + _user.score.c.m + ' moves. Beat that, if you can.!!',
+          description: 'Click to compete with me in Multiply.!!'
+        }, function(response){
+        	message('Hey, your score was posted on facebook.!! :)');
+        });
+    }
 }
