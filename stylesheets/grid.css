@@ -36,13 +36,17 @@ div {
 }
 
 .rightPanel {
-    position: fixed;	
-	padding: 10px;	
+    position: fixed;
+    max-width: 300px;
+	padding: 5px;	
 	background-color: gray;
 	color: white;
 	font-family: sans-serif;
-	font-size: 25px;	
+	font-size: 15px;	
 	text-align: left;
+    border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
 }
 
 .footer {	

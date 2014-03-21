@@ -12,7 +12,7 @@
 
 		<script>
 			$(document).ready(function() {
-				_start();
+				_init();
 			});
 		</script>	
 		
@@ -30,7 +30,7 @@
 	<body>        
 		<div id="fb-root"></div>        
 	
-		<div class="header"><b>Multiply</b><span class="myInfo">&nbsp;by kolgepratik</span><span class="rightHeader">Press spacebar for options</span></div>
+		<div class="header"><b>Multiply</b><span class="myInfo"></span><span class="rightHeader">kolgepratik</span></div>
 		<br>
 		
 		<div id="gridContainer" class="gridContainer">
@@ -56,7 +56,14 @@
 			<div id="grid" class="grid"></div>
 		<div>
 		
-        <div id="rightPanel" class="rightPanel"></div>    
+        <div id="rightPanel" class="rightPanel">
+            S: Save current game (uses cookies) <br>            
+            Z: Undo your last move (maximum 4) <br>            
+            B: Enable Boosts <br>
+            R: Restart Game <br> 
+            H: Help <br>
+            Spacebar: Options / Pause game 
+        </div>    
             
 		<div class="footer">
 			<div class="fb-share-button" data-href="http://kolgepratik.github.io/multiply/multiply.html" data-width="100" data-type="button_count"></div>

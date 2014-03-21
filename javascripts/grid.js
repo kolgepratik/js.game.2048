@@ -70,7 +70,7 @@ var _a_left = [ [], [], [], [] ];
     _a_down = [ [], [], [], [] ],
     _a_right = [ [], [], [], [] ];
 
-function _init(options) {
+function _start(options) {
 	_grid = [];
 	
     _user.game.state = _states.IP;
@@ -99,6 +99,10 @@ function _init(options) {
 	
 	$messageContainer.find('.message').attr('id', 'message');
 	$messageContainer.hide();
+    
+    var gridPosition = $grid.offset();
+    
+    $('#rightPanel').css({ top: gridPosition.top, left: gridPosition.left + gridDimensions + _settings.PADDING_SIZE });
 	
 	var cnt = 0;
 	for(var i=0; i<options.size; i++) {
@@ -127,9 +131,10 @@ function _init(options) {
     _randomBlock();
 }
 
-function _start() {
+function _init() {
 	bindControls();
-    _init({size: 4});
+    
+    _start({size: 4});
 }
 
 function _restart() {
@@ -139,7 +144,7 @@ function _restart() {
     
     _user.game.state = _states.NS; 
     
-    _init({size: 4});
+    _start({size: 4});
 }
 
 
@@ -288,7 +293,6 @@ function _undo() {
 	} else {
         message('You can only undo upto your last 4 moves.');
     }
-    _shareScoreOnFB();
 }
 
 function saveUserMove(arr, where) {
