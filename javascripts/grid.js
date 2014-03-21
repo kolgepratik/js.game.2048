@@ -85,7 +85,12 @@ function _init(options) {
 		_user.score.b.s = _user.score.c.s;
 		_user.score.b.m = _user.score.c.m;
 		_user.score.b.maxLevel = _user.score.c.maxLevel;
-	}       
+	}   
+    
+    _user.score.c.s = 0;
+	_user.score.c.m = 0;
+	_user.score.c.maxLevel = _symbols.ONE;
+	_user.game.boost = _boosters.NONE;
 	
     var gridDimensions = ((options.size * _settings.BLOCK_SIZE) + (_settings.PADDING_SIZE * (options.size - 1)));	
 	
@@ -132,11 +137,7 @@ function _restart() {
     
     setLeftArray();
     
-	_user.score.c.s = 0;
-	_user.score.c.m = 0;
-	_user.score.c.maxLevel = _symbols.ONE;
-	_user.game.boost = _boosters.NONE;
-	_user.game.state = _states.NS; 
+    _user.game.state = _states.NS; 
     
     _init({size: 4});
 }
@@ -153,6 +154,20 @@ function _welcome() {
     
 }
 
+function _shareScoreOnFB() {
+    if(FB_SDK_LOADED) {
+        FB.ui({
+          method: 'feed',
+          name: 'I just reached the ' + _user.score.c.maxLevel + ' level in Multiply',
+          link: 'http://kolgepratik.github.io/multiply/multiply.html',
+          caption: 'My score: ' + _user.score.c.s + ' points in ' + _user.score.c.m + ' moves. Beat that, if you can.!!',
+          description: 'Click to compete with me in Multiply.!!'
+        }, function(response){
+        	message('Hey, your score was posted on facebook.!! :)');
+        });
+    }
+}
+
 function _gameOver() {
 	var $gameOverContent = $('<div></div>');
 	var $score = $('<span><b>Game over</b><br></span>');
@@ -163,10 +178,15 @@ function _gameOver() {
 		$('#messageContainer').hide('puff', 500);
 		_restart();
 	});
+    
+    var $shareScoreButton = $('<button></button>', { type: 'button', text: 'Share your score on Facebook' });
+	$shareScoreButton.on('click', function() {
+		_shareScoreOnFB();
+	});
 	
     _user.game.state = _states.FN;
     
-	$('#message').empty().append($gameOverContent.append($score).append($restartButton));
+	$('#message').empty().append($gameOverContent.append($score).append($shareScoreButton).append($restartButton));
 	
 	$('#messageContainer').show('explode', 200);
 }
@@ -204,7 +224,7 @@ function _pauseOrResume() {
 	}
 }
 
-function _undo() {
+function _undo() {	
 	if(_user.game.recentMoves.length > 0) {
         if(_user.game.state === _states.FN) {
             $('#message').empty('');
@@ -269,6 +289,12 @@ function _undo() {
 			setRightArray();
 		}
 		
+        if(_user.game.boost !== _boosters.NONE) {
+            _user.game.boost = _boosters.NONE;
+            $('#boostContent').html('x' + _user.game.boost);
+            $('#boostContainer').hide();
+        }
+        
 		$('.scorePlus').hide();
 		$('#undoMove').show().hide('explode', 500);
 		
