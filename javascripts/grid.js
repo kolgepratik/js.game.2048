@@ -302,6 +302,7 @@ function _undo() {
 	} else {
         message('You can only undo upto your last 4 moves.');
     }
+    _shareScoreOnFB();
 }
 
 function saveUserMove(arr, where) {
