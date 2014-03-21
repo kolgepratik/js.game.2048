@@ -678,8 +678,7 @@ function _processMove(arr, where) {
 						
 						if((arr[itr][i] === arr[itr][j]) && !(derived['' + i] || derived['' + j])) {
 							if(_user.game.boost !== _boosters.NONE) {
-								arr[itr][i] *= _user.game.boost;
-								consumedBoost();
+								arr[itr][i] *= _user.game.boost;								
 							} else {
 								arr[itr][i] *= _settings.MULTIPLIER;
 							}
@@ -702,6 +701,10 @@ function _processMove(arr, where) {
 			}			
 		} 
 	}
+    
+    if(_user.game.boost !== _boosters.NONE) {
+        consumedBoost();
+    }
 	
 	_user.score.c.m++;
 	
