@@ -403,13 +403,19 @@ function _refresh(newRandomBlock) {
 	$('#movesContent').html(_user.score.c.m);
 }
 
-function _randomBlock() {
+function getFreeGrid() {
     var freeGrid = new Array();
 	for(var g=0; g<_grid.length; g++) {
 		if(_grid[g].s === _symbols.EMPTY) {
 			freeGrid.push(g);
 		}
 	}
+    
+    return freeGrid;
+}
+
+function _randomBlock() {
+    var freeGrid = getFreeGrid();
 	
 	if(freeGrid.length > 0) {
 		var retries = 0;		
@@ -431,8 +437,6 @@ function _randomBlock() {
 		boost();
 		
 		_user.game.state = _states.IP;
-	} else {
-		_user.game.state = _states.PF;
 	}
 }
 
@@ -664,6 +668,10 @@ function _move(where) {
 	if(_user.game.state === _states.PF && plussed === 0) {
 		_gameOver();
 	} else {
+        if(getFreeGrid().length === 0) {
+		  _user.game.state = _states.PF;
+	    }
+        
 		if(stateChanged) {
             _randomBlock();
         }
