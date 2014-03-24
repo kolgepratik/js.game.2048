@@ -30,8 +30,7 @@ var _settings = {
 	MAX_PAIRS: 2,
 	MAX_UNDO_MOVES: 4,
     BEST_SCORE_COOKIE_NAME: 'bestScoreCookie',
-    SAVE_GAME_COOKIE_NAME: 'saveUserGameCookie',
-    LOAD_GAME_COOKIE_NAME: 'loadUserGameCookie'
+    SAVE_GAME_COOKIE_NAME: 'saveUserGameCookie'
 };
 
 var _symbols = {
@@ -109,7 +108,7 @@ var _sets = {
 var _user = {
 	score: { c: { s: 0, m: 0, maxLevel: _symbols.ONE }, b: { s: 0, m: 0, maxLevel: _symbols.ONE } },
 	game: { boost: _boosters.NONE, state: _states.IP, recentMoves: [] },
-    settings: { boost: false, set: _sets.TR }
+    settings: { boost: false, set: _sets.DF }
 };
 
 var _a_left = [ [], [], [], [] ]; 
@@ -390,7 +389,7 @@ function _saveUserGame() {
     var toSave = {};
     toSave.u = _user;
     toSave.g = _grid;    
-    $.cookie(_settings.SAVE_GAME_COOKIE_NAME, JSON.stringify(toSave));
+    $.cookie(_settings.SAVE_GAME_COOKIE_NAME, JSON.stringify(toSave), { expires: 365 });
     
     message('Your Game was saved.');
 }
