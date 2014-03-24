@@ -502,10 +502,10 @@ function bindControls() {
 		} else if(event.which ===_control_bindings.RESTART) {
 			_restart();
 		} else if(event.which ===_control_bindings.TOGGLE_BOOST) {
-            if(_user.settings.set === _sets.DF) {
+            if(_user.settings.set === _sets.DF || _user.settings.set === _sets.AL) {
                 _toggleBoost();
-            } else {
-                message('Boosts are available only in Default Mode.<br>Change Game Mode by pressing <b>M</b> any time.');
+            } else { 
+                message('Boosts are available only in Default and Alphabets Mode.<br>Change Game Mode by pressing <b>M</b> any time.');
             }
         } else if(event.which ===_control_bindings.MODE_SELECT) {
             _chooseMode();
