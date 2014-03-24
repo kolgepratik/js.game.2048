@@ -5,6 +5,7 @@
         
 		<script type="text/javascript" src="javascripts/jquery-1.11.0.min.js" ></script>
 		<script type="text/javascript" src="javascripts/jquery-ui-1.10.4.custom.min.js" ></script>
+        <script type="text/javascript" src="javascripts/json2.js" ></script>
 		<script type="text/javascript" src="javascripts/jquery.cookie.js" ></script>
 		<script type="text/javascript" src="javascripts/fb.js" ></script>
         <script type="text/javascript" src="javascripts/grid.js" ></script>        
@@ -43,6 +44,7 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				Score: <span id="scoreContent" class="scoreContent"></span>
 				<span style="position: relative;">
+                    <span class="scorePlus" id="scorePlus" style="display: none;"></span>
 					<span class="scorePlus" id="plus_2" style="display: none;">+2</span>
 					<span class="scorePlus" id="plus_4" style="display: none;">+4</span>
 					<span class="scorePlus" id="plus_8" style="display: none;">+8</span>
@@ -59,10 +61,12 @@
 		<div>
 		
         <div id="rightPanel" class="rightPanel">
-            S: Save current game (uses cookies) <br>            
+            <!-- S: Save current game (uses cookies) <br> -->
             Z: Undo your last move (maximum 4) <br>            
-            B: Enable Boosts <br>
+            M: Select Game Mode <br>
+            B: Enable Boosts (only in Default mode) <br>
             R: Restart Game <br> 
+            N: Hints <br> 
             H: Help <br>
             Spacebar: Options / Pause game 
         </div>    

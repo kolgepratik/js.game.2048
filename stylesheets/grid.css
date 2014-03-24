@@ -1,6 +1,7 @@
 body {
 	text-align: center;
 	vertical-align: middle;
+    font-family: sans-serif;
 }
 
 div {
@@ -28,7 +29,6 @@ div {
 	top: 0px;
 	background-color: gray;
 	color: white;
-	font-family: sans-serif;
 	font-size: 25px;
 	opacity: 0.7;
 	filter: alpha(opacity=70);
@@ -40,8 +40,7 @@ div {
     max-width: 300px;
 	padding: 5px;	
 	background-color: gray;
-	color: white;
-	font-family: sans-serif;
+	color: white;	
 	font-size: 15px;	
 	text-align: left;
     border-radius: 5px;
@@ -57,8 +56,7 @@ div {
 	right: 0px;
 	bottom: 40px;
 	background-color: white;
-	color: gray;
-	font-family: sans-serif;
+	color: gray;	
 	font-size: 20px;
 	opacity: 1;
 	filter: alpha(opacity=100);
@@ -105,8 +103,7 @@ div {
 	width: 100%;
 	height: 100%;
 	background-color: white;
-	color: #4D5656;
-	font-family: sans-serif;
+	color: #4D5656;	
 	font-size: 20px;
 	opacity: 0.9;
 	filter: alpha(opacity=90);
@@ -118,8 +115,7 @@ div {
 }
 
 .block {
-	position: absolute;
-	font-family: sans-serif;
+	position: absolute;	
 	font-size: 40px;
 	font-weight: bold;
 	display: table;    
@@ -134,34 +130,29 @@ div {
     vertical-align:middle;
 }
 
-.scoreContainer {
-	font-family: sans-serif;
+.scoreContainer {	
 	font-size: 30px;
 	color: #334C4C;
 }
 
-.scoreContent {
-	font-family: sans-serif;
+.scoreContent {	
 	font-size: 30px;
 	font-weight: bold;
 	color: #4D5656;
 }
 
-.boostContainer {
-	font-family: sans-serif;
+.boostContainer {	
 	font-size: 15px;
 	color: #334C4C;
 }
 
-.boostContent {
-	font-family: sans-serif;
+.boostContent {	
 	font-size: 15px;
 	font-weight: bold;
 	color: #4D5656;
 }
 
-.scorePlus {
-	font-family: sans-serif;
+.scorePlus {	
 	font-size: 20px;
 	color: #FF6666;
 	position: absolute;
@@ -169,88 +160,171 @@ div {
 	top: 0;
 }
 
-.level_0 {
+.level_0_0, .level_1_0 {
 	color: white;
 	background-color: #AEC1C1;
 }
 
-.level_2 {
+.level_0_2, .level_1_2 {
 	color: gray;
 	background-color: #FFE0C2;
 }
 
-.level_4 {
+.level_0_4, .level_1_4 {
 	color: gray;
 	background-color: #FFD1A3;
 }
 
-.level_8 {
+.level_0_8, .level_1_8 {
 	color: gray;
 	background-color: #E6B88A;
 }
 
 
-.level_16 {
+.level_2_0 {
+	color: white;
+	background-color: #AEC1C1;
+}
+
+.level_2_1 {
+	color: gray;
+	background-color: #FFE0C2;
+}
+
+.level_2_2 {
+	color: gray;
+	background-color: #FFD1A3;
+}
+
+.level_2_3 {
+	color: gray;
+	background-color: #E6B88A;
+}
+
+
+.level_0_16, .level_1_16 {
 	color: gray;
 	background-color: #99C299;
 }
 
-.level_32 {
+.level_0_32, .level_1_32 {
 	color: white;
 	background-color: #66A366;
 }
 
-.level_64 {
+.level_0_64, .level_1_64 {
 	color: white;
 	background-color: #338533;
 }
 
-.level_128 {
+.level_0_128, .level_1_128 {
+	color: white;
+	background-color: #005C00;
+}
+
+
+.level_2_6 {
+	color: gray;
+	background-color: #99C299;
+}
+
+.level_2_12 {
+	color: white;
+	background-color: #66A366;
+}
+
+.level_2_24 {
+	color: white;
+	background-color: #338533;
+}
+
+.level_2_48 {
 	color: white;
 	background-color: #005C00;
 }
 
 
 
-.level_256 {
+.level_0_256, .level_1_256 {
 	color: gray;
 	background-color: #FFD6CC;
 }
 
-.level_512 {
+.level_0_512, .level_1_512 {
 	color: gray;
 	background-color: #FFAD99;
 }
 
-.level_1024 {
+.level_0_1024, .level_1_1024 {
 	color: white;
 	background-color: #FF8566;
 }
 
-.level_2048 {
+.level_0_2048, .level_1_2048 {
+	color: white;
+	background-color: #FF4719;
+}
+
+
+.level_2_96 {
+	color: gray;
+	background-color: #FFD6CC;
+}
+
+.level_2_192 {
+	color: gray;
+	background-color: #FFAD99;
+}
+
+.level_2_384 {
+	color: white;
+	background-color: #FF8566;
+}
+
+.level_2_768 {
 	color: white;
 	background-color: #FF4719;
 }
 
 
 
-.level_4096 {
+.level_0_4096, .level_1_4096 {
 	color: gray;
 	background-color: #D1F0FF;
 }
 
-.level_8192 {
+.level_0_8192, .level_1_8192 {
 	color: gray;
 	background-color: #B2E6FF;
 }
 
-.level_16384 {
+.level_0_16384, .level_1_16384 {
 	color: gray;
 	background-color: #94DBFF;
 }
 
-.level_32768 {
+.level_0_32768, .level_1_32768 {
 	color: gray;
 	background-color: #75D1FF;
 }
 
+
+.level_2_1366 {
+	color: gray;
+	background-color: #D1F0FF;
+}
+
+.level_2_3072 {
+	color: gray;
+	background-color: #B2E6FF;
+}
+
+.level_2_6144 {
+	color: gray;
+	background-color: #94DBFF;
+}
+
+.level_2_12288 {
+	color: gray;
+	background-color: #75D1FF;
+}
