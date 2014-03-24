@@ -248,10 +248,12 @@ function _gameOver() {
     var prevBestScore = null;
     if($.cookie(_settings.BEST_SCORE_COOKIE_NAME)) {
         prevBestScore = $.parseJSON($.cookie(_settings.BEST_SCORE_COOKIE_NAME));
+    }
         
-        if(_user.score.c.s > prevBestScore.s) {
-            $.cookie(_settings.BEST_SCORE_COOKIE_NAME, JSON.stringify(_user.score.c), { expires: 365 });
-        }
+    if(prevBestScore && _user.score.c.s > prevBestScore.s) {
+        $.cookie(_settings.BEST_SCORE_COOKIE_NAME, JSON.stringify(_user.score.c), { expires: 365 });
+    } else {
+        $.cookie(_settings.BEST_SCORE_COOKIE_NAME, JSON.stringify(_user.score.c), { expires: 365 });
     }
     
     _user.game.state = _states.FN;
