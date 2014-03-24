@@ -18,7 +18,7 @@ var _control_bindings = {
 	UNDO: 90,
     MODE_SELECT: 77,
     HINT: 78,
-    SAVE_GAME: 86,
+    SAVE_GAME: 83,
     LOAD_GAME: 76,    
     TOGGLE_BOOST: 66
 };
@@ -127,11 +127,12 @@ function _start(options) {
 
 	var $messageContainer = $('#messageContainer'); 
 	
-	if(_user.score.c.s > _user.score.b.s) {
-		_user.score.b.s = _user.score.c.s;
-		_user.score.b.m = _user.score.c.m;
-		_user.score.b.maxLevel = _user.score.c.maxLevel;
-	}   
+    if($.cookie(_settings.BEST_SCORE_COOKIE_NAME)) {
+        _user.score.b = $.parseJSON($.cookie(_settings.BEST_SCORE_COOKIE_NAME));
+        $('#bestScoreContent').html('Level ' + _user.score.b.maxLevel + '. ' + _user.score.b.s + ' points in ' + _user.score.b.m + ' moves.');
+    } else { 
+        $('#bestScoreContent').html('');
+    }
     
     _user.score.c.s = 0;
 	_user.score.c.m = 0;
@@ -148,7 +149,7 @@ function _start(options) {
     
     var gridPosition = $grid.offset();
     
-    $('#rightPanel').css({ top: gridPosition.top, left: gridPosition.left + gridDimensions + _settings.PADDING_SIZE });
+    $('#rightPanel').css({ top: gridPosition.top, left: gridPosition.left + gridDimensions + _settings.PADDING_SIZE });    
 	
 	var cnt = 0;
 	for(var i=0; i<options.size; i++) {
@@ -244,6 +245,15 @@ function _gameOver() {
 		_shareScoreOnFB();
 	});
 	
+    var prevBestScore = null;
+    if($.cookie(_settings.BEST_SCORE_COOKIE_NAME)) {
+        prevBestScore = $.parseJSON($.cookie(_settings.BEST_SCORE_COOKIE_NAME));
+        
+        if(_user.score.c.s > prevBestScore.s) {
+            $.cookie(_settings.BEST_SCORE_COOKIE_NAME, JSON.stringify(_user.score.c), { expires: 365 });
+        }
+    }
+    
     _user.game.state = _states.FN;
     
 	$('#message').empty().append($gameOverContent.append($score).append($shareScoreButton).append($restartButton));
@@ -544,7 +554,9 @@ function _refresh(newRandomBlock) {
 			$('#grid .block_' + newRandomBlock).hide().show('puff', 200);
 		}
 	}
-	
+    
+    $('#savedGameContent').html(($.cookie(_settings.SAVE_GAME_COOKIE_NAME)) ? 'Available' : 'No saved Game found.');
+    
 	$('#scoreContent').html(_user.score.c.s);//.effect('highlight');
 	$('#movesContent').html(_user.score.c.m);
 }
@@ -932,7 +944,7 @@ function _move(where) {
         $('#scorePlus').html(afterMove.s).show().hide('explode', 500);
     }
         
-    if(_user.game.boost !== _boosters.NONE) {
+    if(_user.game.boost !== _boosters.NONE && afterMove.b) {
         consumedBoost();
     }
 	
@@ -955,6 +967,7 @@ function _move(where) {
 function _processMove(arr, where) {
 	var plussed = 0; 
     var scorePlussed = 0;
+    var boostConsumed = false;
 	
 	for(var itr=0; itr<arr.length; itr++) {		
 		var derived = new Object();
@@ -988,7 +1001,8 @@ function _processMove(arr, where) {
                         if(_user.settings.set === _sets.DF || _user.settings.set === _sets.AL) {
                             if((arr[itr][i] === arr[itr][j]) && !(derived['' + i] || derived['' + j])) {
                                 if(_user.game.boost !== _boosters.NONE) {
-                                    arr[itr][i] *= _user.game.boost;								
+                                    arr[itr][i] *= _user.game.boost;	
+                                    boostConsumed = true;
                                 } else {
                                     arr[itr][i] *= _settings.MULTIPLIER;
                                 }
@@ -1040,7 +1054,7 @@ function _processMove(arr, where) {
 		} 
 	}    
 	
-	return { p: plussed, s: scorePlussed };
+	return { p: plussed, s: scorePlussed, b: boostConsumed };
 }
 
 function animateMove(level, start, end, where, newValue) {
