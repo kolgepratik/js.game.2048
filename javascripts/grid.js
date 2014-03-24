@@ -387,13 +387,21 @@ function saveUserMove(arr, where) {
 
 
 function _saveUserGame() {
-    $.cookie(_settings.SAVE_GAME_COOKIE_NAME, JSON.stringify(_user));
+    var toSave = {};
+    toSave.u = _user;
+    toSave.g = _grid;    
+    $.cookie(_settings.SAVE_GAME_COOKIE_NAME, JSON.stringify(toSave));
+    
     message('Your Game was saved.');
 }
 
 
 function _loadUserGame() {
-    _user = $.parseJSON($.cookie(_settings.SAVE_GAME_COOKIE_NAME));
+    var savedGameData = $.parseJSON($.cookie(_settings.SAVE_GAME_COOKIE_NAME));
+    _user = savedGameData.u;
+    _grid = savedGameData.g;
+    _refresh();
+    
     message('Saved Game loaded successfully.');
 }
 
