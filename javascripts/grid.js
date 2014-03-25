@@ -399,9 +399,11 @@ function saveUserMove(arr, where) {
 
 function _saveUserGame() {
     var toSave = {};
-    toSave.u = _user;
-    toSave.g = _grid;    
+    toSave.score = _user.score.c;
+    toSave.game = { s: _user.game.state, b: _user.game.boost };    
+    toSave.grid = _grid;
     $.cookie(_settings.SAVE_GAME_COOKIE_NAME, JSON.stringify(toSave), { expires: 365 });
+    _refresh();
     
     message('Your Game was saved.');
 }
@@ -409,8 +411,10 @@ function _saveUserGame() {
 
 function _loadUserGame() {
     var savedGameData = $.parseJSON($.cookie(_settings.SAVE_GAME_COOKIE_NAME));
-    _user = savedGameData.u;
-    _grid = savedGameData.g;
+    _user.score.c = savedGameData.score;
+    _user.game.state = savedGameData.game.s;
+    _user.game.boost = savedGameData.game.b;    
+    _grid = savedGameData.grid;
     _refresh();
     
     message('Saved Game loaded successfully.');
